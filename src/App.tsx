@@ -17,6 +17,7 @@ interface Product {
   image: string
   brand: string
   capacity: string
+  type: string
   rating: number
   features: string[]
 }
@@ -35,6 +36,7 @@ const sampleProducts: Product[] = [
     image: "https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=400&h=400&fit=crop",
     brand: "Arctic",
     capacity: "450L",
+    type: "French Door",
     rating: 4.8,
     features: ["Energy Star", "Ice Maker", "Smart Controls"]
   },
@@ -45,6 +47,7 @@ const sampleProducts: Product[] = [
     image: "https://images.unsplash.com/photo-1556909114-4234831d63e4?w=400&h=400&fit=crop",
     brand: "CoolMax",
     capacity: "680L",
+    type: "Side-by-Side",
     rating: 4.9,
     features: ["Water Dispenser", "Touch Screen", "WiFi Enabled"]
   },
@@ -55,6 +58,7 @@ const sampleProducts: Product[] = [
     image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop",
     brand: "FrostGuard",
     capacity: "280L",
+    type: "Top Freezer",
     rating: 4.6,
     features: ["Compact Design", "Energy Efficient", "Quiet Operation"]
   },
@@ -65,6 +69,7 @@ const sampleProducts: Product[] = [
     image: "https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=400&h=400&fit=crop&brightness=0.8",
     brand: "IcePeak",
     capacity: "520L",
+    type: "Bottom Freezer",
     rating: 4.7,
     features: ["Dual Zone", "Voice Control", "Smart Diagnostics"]
   },
@@ -75,6 +80,7 @@ const sampleProducts: Product[] = [
     image: "https://images.unsplash.com/photo-1556909114-4234831d63e4?w=400&h=400&fit=crop&brightness=1.2",
     brand: "ChillMaster",
     capacity: "750L",
+    type: "French Door",
     rating: 4.9,
     features: ["Family Size", "Flexible Storage", "Temperature Control"]
   },
@@ -85,6 +91,7 @@ const sampleProducts: Product[] = [
     image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop&brightness=1.1",
     brand: "EcoFreeze",
     capacity: "350L",
+    type: "Top Freezer",
     rating: 4.5,
     features: ["Eco-Friendly", "LED Lighting", "Adjustable Shelves"]
   }
@@ -97,6 +104,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState('name')
   const [filterBrand, setFilterBrand] = useState('all')
+  const [filterType, setFilterType] = useState('all')
 
   // Load cart from localStorage on component mount
   useEffect(() => {
@@ -156,7 +164,8 @@ function App() {
       const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                            product.brand.toLowerCase().includes(searchQuery.toLowerCase())
       const matchesBrand = filterBrand === 'all' || product.brand === filterBrand
-      return matchesSearch && matchesBrand
+      const matchesType = filterType === 'all' || product.type === filterType
+      return matchesSearch && matchesBrand && matchesType
     })
     .sort((a, b) => {
       switch (sortBy) {
@@ -173,6 +182,7 @@ function App() {
 
   // Get unique brands for filter
   const brands = [...new Set(sampleProducts.map(product => product.brand))]
+  const types = ['Bottom Freezer', 'Top Freezer', 'French Door', 'Side-by-Side']
 
   // Smooth scroll to section
   const scrollToSection = (sectionId: string) => {
@@ -407,6 +417,17 @@ function App() {
                 ))}
               </SelectContent>
             </Select>
+            <Select value={filterType} onValueChange={setFilterType}>
+              <SelectTrigger className="w-full md:w-48">
+                <SelectValue placeholder="Filter by type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Types</SelectItem>
+                {types.map(type => (
+                  <SelectItem key={type} value={type}>{type}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className="w-full md:w-48">
                 <SelectValue placeholder="Sort by" />
@@ -593,8 +614,7 @@ function App() {
                   </div>
                   <div className="flex items-center">
                     <Mail className="h-5 w-5 mr-3 text-blue-200" />
--                    
-+                    <span>infofridgelogic@gmail.com</span>
+                    <span>infofridgelogic@gmail.com</span>
                   </div>
                 </div>
               </div>
