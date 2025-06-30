@@ -593,7 +593,7 @@ function App() {
                   </div>
                   <div className="flex items-center">
                     <Mail className="h-5 w-5 mr-3 text-blue-200" />
--                    <span>info@fridgelogic.ca</span>
+-                    
 +                    <span>infofridgelogic@gmail.com</span>
                   </div>
                 </div>
